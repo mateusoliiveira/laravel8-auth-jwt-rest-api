@@ -165,7 +165,7 @@ class CategoryController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
         
-        $categoryFind->delete();
+        $model->delete($id);
         return response()->json([
             'success' => true,
             'message' => 'Categoria deletada com sucesso.'

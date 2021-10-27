@@ -9,5 +9,6 @@ interface CategoryRepositoryInterface
     public function with($table);
     public function create($data);
     public function update($data);
+    public function delete($id);
 
 }

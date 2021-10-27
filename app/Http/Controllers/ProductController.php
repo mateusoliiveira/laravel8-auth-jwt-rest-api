@@ -170,7 +170,7 @@ class ProductController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
     
-        $productFind->delete();
+        $model->delete($id);
         return response()->json([
             'success' => true,
             'message' => 'Produto deletado com sucesso.'

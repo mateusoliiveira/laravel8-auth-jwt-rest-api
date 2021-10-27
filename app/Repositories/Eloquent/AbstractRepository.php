@@ -38,9 +38,9 @@ abstract class AbstractRepository
         return $this->model->update($data);
     }
 
-    public function delete() 
+    public function delete($id) 
     {
-        return $this->model->delete();
+        return $this->model->destroy($id);
     }
 
     protected function resolveModel()
