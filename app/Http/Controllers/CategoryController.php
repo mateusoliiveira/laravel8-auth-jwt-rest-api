@@ -15,9 +15,11 @@ class CategoryController extends Controller
     public function __construct()
     {
         try {
-            $this->user = JWTAuth::parseToken()->authenticate();
+            $this->user = JWTAuth::parseToken()
+                ->authenticate();
         } catch (JWTException $e) {
-                return response()->json([
+                return response()
+                ->json([
                 'success' => false,
             ], Response::HTTP_UNAUTHORIZED);
         }
@@ -60,11 +62,11 @@ class CategoryController extends Controller
 
         $data = $request->only('name');
         $validator = Validator::make($data, [
-            'name' => 'required|string|unique:categories,name',
+            'name' => 'required|string|unique:categories,name|min:3|max:100',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 200);
+            return response()->json(['error' => $validator->messages()], Response::HTTP_BAD_REQUEST);
         }
 
         $category = $model->create($data);
@@ -96,7 +98,7 @@ class CategoryController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Desculpe, categoria não foi encontrada.'
-            ], 400);
+            ], Response::HTTP_BAD_REQUEST);
         }
         return $category;
     }
@@ -131,7 +133,7 @@ class CategoryController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 200);
+            return response()->json(['error' => $validator->messages()], Response::HTTP_BAD_REQUEST);
         }
 
         $category = $categoryFind->update($data);

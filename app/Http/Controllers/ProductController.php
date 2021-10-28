@@ -15,9 +15,11 @@ class ProductController extends Controller
     public function __construct()
     {
         try {
-            $this->user = JWTAuth::parseToken()->authenticate();
+            $this->user = JWTAuth::parseToken()
+                ->authenticate();
         } catch (JWTException $e) {
-                return response()->json([
+                return response()
+                ->json([
                 'success' => false,
             ], Response::HTTP_UNAUTHORIZED);
         }
@@ -60,14 +62,14 @@ class ProductController extends Controller
         }
         $data = $request->only('category_id', 'name', 'price', 'quantity');
         $validator = Validator::make($data, [
-            'category_id' => 'required',
-            'name' => 'required|string',
-            'price' => 'required',
-            'quantity' => 'required'
+            'category_id' => 'required|integer|exists:categories,id',
+            'name' => 'required|string|min:3|max:100',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:0'
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 200);
+            return response()->json(['error' => $validator->messages()], Response::HTTP_BAD_REQUEST);
         }
 
         $product = $model->create($data);
@@ -136,7 +138,7 @@ class ProductController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 200);
+            return response()->json(['error' => $validator->messages()], Response::HTTP_BAD_REQUEST);
         }
 
         $product = $productFind->update($data);
